@@ -7,21 +7,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dz19.domain.User;
 import ru.otus.dz19.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 
+//@Transactional
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-
-//    @Autowired
-//    public UserDetailsServiceImpl(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -32,7 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserBuilder builder = null;
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(name);
-            builder.password(new BCryptPasswordEncoder().encode(user.getPassword()));
+//            builder.password(new BCryptPasswordEncoder().encode(user.getPassword()));
+            builder.password(user.getPassword());
             builder.roles(user.getRole());
         } else {
             throw new UsernameNotFoundException("User not found.");
@@ -44,8 +42,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //    @PostConstruct
 //    public void init(){
 //        User user = new User();
-//        user.setName("user");
-//        user.setPassword("user123");
+//        user.setName("admin");
+//        user.setPassword(new BCryptPasswordEncoder().encode("admin123"));
 //        user.setRole("USER");
 //        userRepository.save(user);
 //    }
