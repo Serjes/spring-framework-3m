@@ -1,6 +1,5 @@
 package ru.otus.dz19.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +19,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 //                .authorizeRequests().antMatchers("/").authenticated()
-                .authorizeRequests().anyRequest().authenticated()
+//                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/", "/books").authenticated()
+//                .authorizeRequests().antMatchers("/", "/books", "/authors").authenticated()
+                .and()
+                .authorizeRequests().antMatchers("/addbook/**", "/books/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()
@@ -32,9 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     //    @Autowired
 //    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication()
-//                .withUser("admin").password("admin123").roles("ADMIN");
+//                .withUser("admin").password("123").roles("ADMIN");
 //        auth.inMemoryAuthentication()
-//                .withUser("libuser").password("123").roles("USER");
+//                .withUser("user").password("123").roles("USER");
 //    }
     @Bean
     public UserDetailsService userDetailsService() {

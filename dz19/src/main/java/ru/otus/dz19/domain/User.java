@@ -16,7 +16,6 @@ public class User {
 
     @Column(name="password")
     private String password;
-//    private String[] roles;
 
     @Column(name = "role")
     private String role;
