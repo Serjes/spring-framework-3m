@@ -32,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(AddCommentController.class)
 @WithMockUser(
-        username = "user"//,
-        //authorities = {"USER"}
+        username = "user"
 )
 public class AddCommentControllerTest {
 
@@ -50,7 +49,6 @@ public class AddCommentControllerTest {
     private CommentService commentService;
 
 
-//    @ComponentScan(basePackageClasses = {AddCommentController.class, SecurityConfiguration.class})
     @Configuration
     @ComponentScan(basePackageClasses = {AddCommentController.class})
     public static class TestConf {

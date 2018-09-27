@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(IndexController.class)
 @WithMockUser(
         username = "user"
-//        authorities = {"USER"}
 )
 public class IndexControllerTest {
 

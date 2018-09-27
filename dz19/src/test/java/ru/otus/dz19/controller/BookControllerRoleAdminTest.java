@@ -32,10 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookController.class)
 @WithMockUser(
         username = "admin",
-//        password = new BCryptPasswordEncoder().encode("123"),
-//        roles = {"ADMIN"}
         authorities = {"ROLE_ADMIN"}
-//        authorities = {"ADMIN"}
 )
 public class BookControllerRoleAdminTest {
 
@@ -78,7 +75,6 @@ public class BookControllerRoleAdminTest {
     @Test
     public void booksPage() throws Exception {
         mvc.perform(get("/books"))
-//                .flashAttr("bookDto", bookDto))
                 .andExpect(status().isOk());
     }
 
@@ -92,14 +88,9 @@ public class BookControllerRoleAdminTest {
 
     @Test
     public void saveBook() throws Exception {
-//        mvc.perform(post("/books/add")
-//                .flashAttr("bookDto", bookDto))
-//                .andExpect(redirectedUrl("/books"));
         mvc.perform(post("/books/add")
                 .flashAttr("bookDto", bookDto))
                 .andExpect(redirectedUrl("/books"));
-//                .andExpect()
-//                .andExpect(status().isOk());
     }
 
     @Test

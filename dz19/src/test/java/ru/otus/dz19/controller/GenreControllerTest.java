@@ -30,14 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(GenreController.class)
-//@WithMockUser(
-//        username = "admin",
-//        authorities = {"ROLE_ADMIN"}
-//)
 @WithMockUser(
         username = "user"
-//        authorities = {"ROLE_USER"}
-//        authorities = {"USER"}
 )
 public class GenreControllerTest {
 

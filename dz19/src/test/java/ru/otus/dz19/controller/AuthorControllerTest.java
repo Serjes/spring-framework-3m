@@ -31,8 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(AuthorController.class)
 @WithMockUser(
-        username = "user"//,
-//        authorities = {"USER"}
+        username = "user"
 )
 public class AuthorControllerTest {
 
