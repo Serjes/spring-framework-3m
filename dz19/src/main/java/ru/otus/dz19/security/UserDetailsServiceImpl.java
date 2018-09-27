@@ -5,12 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.dz19.domain.User;
 import ru.otus.dz19.repository.UserRepository;
-
-import javax.annotation.PostConstruct;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -22,12 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
         User user = userRepository.findByName(name);
-
-//        org.springframework.security.core.userdetails.User.UserBuilder builder = null;
         UserBuilder builder = null;
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(name);
-//            builder.password(new BCryptPasswordEncoder().encode(user.getPassword()));
             builder.password(user.getPassword());
             builder.roles(user.getRole());
         } else {

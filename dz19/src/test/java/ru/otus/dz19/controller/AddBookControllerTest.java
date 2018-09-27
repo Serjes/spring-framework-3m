@@ -9,9 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz19.domain.*;
+import ru.otus.dz19.repository.UserRepository;
+import ru.otus.dz19.security.SecurityConfiguration;
 import ru.otus.dz19.service.CommentService;
 import ru.otus.dz19.service.LibraryService;
 
@@ -27,6 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AddBookController.class)
+@WithMockUser(
+        username = "admin",
+        authorities = {"ROLE_ADMIN"}
+
+)
 public class AddBookControllerTest {
 
     @Autowired
@@ -36,10 +44,13 @@ public class AddBookControllerTest {
     private LibraryService libraryService;
 
     @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
     private CommentService commentService;
 
     @Configuration
-    @ComponentScan(basePackageClasses = {AddBookController.class})
+    @ComponentScan(basePackageClasses = {AddBookController.class, SecurityConfiguration.class})
     public static class TestConf {
     }
 

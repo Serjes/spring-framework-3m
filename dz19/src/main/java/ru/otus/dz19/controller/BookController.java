@@ -29,7 +29,11 @@ public class BookController {
         return "books";
     }
 
-    @PostMapping("/books/delete/")
+//    @PostMapping("/books/delete/")
+    @RequestMapping(
+            value = {"/books/delete/"},
+            method = RequestMethod.POST
+    )
     public String delete(
             @ModelAttribute("bookDto") BookDto bookDto
     ) {

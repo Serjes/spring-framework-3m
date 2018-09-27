@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
@@ -18,27 +17,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .authorizeRequests().antMatchers("/").authenticated()
-//                .authorizeRequests().anyRequest().authenticated()
                 .authorizeRequests().antMatchers("/", "/books").authenticated()
-//                .authorizeRequests().antMatchers("/", "/books", "/authors").authenticated()
                 .and()
                 .authorizeRequests().antMatchers("/addbook/**", "/books/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()
                 .logout().logoutUrl("/logout");
-//                .logout().logoutUrl("/logout").logoutSuccessUrl("/");
-
     }
 
-    //    @Autowired
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password("123").roles("ADMIN");
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("123").roles("USER");
-//    }
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -53,19 +40,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new PasswordEncoder() {
-//            @Override
-//            public String encode(CharSequence charSequence) {
-//                return charSequence.toString();
-//            }
-//
-//            @Override
-//            public boolean matches(CharSequence charSequence, String s) {
-//                return charSequence.toString().equals(s);
-//            }
-//        };
-//    }
-
 }

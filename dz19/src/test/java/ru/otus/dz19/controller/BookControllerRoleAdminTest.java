@@ -3,13 +3,14 @@ package ru.otus.dz19.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz19.domain.*;
@@ -21,18 +22,22 @@ import ru.otus.dz19.service.LibraryService;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookController.class)
 @WithMockUser(
-        username = "user",
-        authorities = {"ROLE_USER"}
+        username = "admin",
+//        password = new BCryptPasswordEncoder().encode("123"),
+//        roles = {"ADMIN"}
+        authorities = {"ROLE_ADMIN"}
+//        authorities = {"ADMIN"}
 )
-public class BookControllerTest {
+public class BookControllerRoleAdminTest {
 
     @Autowired
     private MockMvc mvc;
@@ -72,20 +77,16 @@ public class BookControllerTest {
 
     @Test
     public void booksPage() throws Exception {
-        Mockito.when(libraryService.listBooks()).thenReturn(books);
         mvc.perform(get("/books"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString(book.getTitle())))
-                .andExpect(view().name("books"));
+//                .flashAttr("bookDto", bookDto))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void delete() throws Exception {
-
-//        mvc.perform(post("/books/delete/").flashAttr("bookDto", bookDto))
-//                .andExpect(redirectedUrl("/books"));
-        mvc.perform(post("/books/delete/").flashAttr("bookDto", bookDto))
-                .andExpect(status().isForbidden());
+        mvc.perform(post("/books/delete/")
+                .flashAttr("bookDto", bookDto))
+                .andExpect(redirectedUrl("/books"));
 
     }
 
@@ -96,13 +97,15 @@ public class BookControllerTest {
 //                .andExpect(redirectedUrl("/books"));
         mvc.perform(post("/books/add")
                 .flashAttr("bookDto", bookDto))
-                .andExpect(status().isForbidden());
+                .andExpect(redirectedUrl("/books"));
+//                .andExpect()
+//                .andExpect(status().isOk());
     }
 
     @Test
     public void updateBook() throws Exception {
         mvc.perform(post("/books/add/1")
                 .flashAttr("bookDto", bookDto))
-                .andExpect(status().isForbidden());
+                .andExpect(redirectedUrl("/books"));
     }
 }
