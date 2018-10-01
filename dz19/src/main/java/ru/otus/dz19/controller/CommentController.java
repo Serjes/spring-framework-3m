@@ -26,15 +26,8 @@ public class CommentController {
     }
 
     @GetMapping("/comments")
-    public String commentsPage(Model model) {
-        List<Comment> allComments = commentService.listComments();
-        model.addAttribute("comments", allComments);
-        return "comments";
-    }
-
-    @GetMapping("/comments/list")
     public String commentsByBookPage(
-            @RequestParam("id") Integer id,
+            @RequestParam("book-id") Integer id,
             Model model
     ) {
         Optional<Book> optionalBook = libraryService.findBookById(id);
@@ -50,36 +43,64 @@ public class CommentController {
         return "comments";
     }
 
-    @RequestMapping(
-            value = {"/comments/add"},
-            method = RequestMethod.POST
-    )
-    public String saveBook(
+    @PostMapping("/comments/add")
+    public String saveComment(
             @ModelAttribute("commentDto") CommentDto commentDto
     ) {
         commentService.add(commentDto.getCommentContent(), commentDto.getBookId());
-        return "redirect:/comments/list?id=" + commentDto.getBookId();
+        return "redirect:/comments?book-id=" + commentDto.getBookId();
     }
 
-    @RequestMapping(
-            value = {"/comments/add/{id}"},
-            method = RequestMethod.POST
-    )
-    public String updateBook(
+    @PostMapping("/comments/add/{id}")
+    public String updateComment(
             @ModelAttribute("commentDto") CommentDto commentDto,
             @PathVariable("id") Integer id
     ) {
         commentService.updateComment(id, commentDto.getCommentContent());
-        return "redirect:/comments/list?id=" + commentDto.getBookId();
+        return "redirect:/comments?book-id=" + commentDto.getBookId();
     }
 
     @PostMapping("/comments/delete/")
-    public String delete(
+    public String deleteComment(
             @ModelAttribute("commentDto") CommentDto commentDto
     ) {
         Optional<Comment> optionalComment = commentService.findCommentById(commentDto.getId());
         int id = optionalComment.get().getBook().getId();
         commentService.deleteComment(commentDto.getId());
-        return "redirect:/comments/list?id=" + id;
+        return "redirect:/comments?book-id=" + id;
+    }
+
+    @GetMapping("/addcomment")
+    public String addCommentPage(
+            Model model,
+            @RequestParam("id") Integer id
+    ) {
+        CommentDto commentDto = new CommentDto();
+        Optional<Book> optionalBook = libraryService.findBookById(id);
+        if (optionalBook.isPresent()){
+            commentDto.setBookTitle(optionalBook.get().getTitle());
+            commentDto.setBookId(optionalBook.get().getId());
+        }
+        model.addAttribute("commentDto", commentDto);
+        model.addAttribute("idBook", id);
+        return "addcomment";
+    }
+
+    @GetMapping("/addcomment/edit")
+    public String editCommentPage(
+            @RequestParam("id") Integer id,
+            Model model
+    ) {
+        CommentDto commentDto = new CommentDto();
+        Optional<Comment> optionalComment = commentService.findCommentById(id);
+        if(optionalComment.isPresent()) {
+            commentDto.setCommentContent(optionalComment.get().getContent());
+            commentDto.setBookId(optionalComment.get().getBook().getId());
+            commentDto.setId(optionalComment.get().getId());
+            model.addAttribute("idBook", optionalComment.get().getBook().getId());
+        }
+        model.addAttribute("commentDto", commentDto);
+
+        return "addcomment";
     }
 }

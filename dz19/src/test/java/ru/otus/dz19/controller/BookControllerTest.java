@@ -101,4 +101,16 @@ public class BookControllerTest {
                 .flashAttr("bookDto", bookDto))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    public void addBookPage() throws Exception {
+        mvc.perform(get("/addbook"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void editBookPage() throws Exception {
+        mvc.perform(get("/addbook/edit?id=1" ))
+                .andExpect(status().isForbidden());
+    }
 }

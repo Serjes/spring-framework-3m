@@ -16,46 +16,46 @@ import java.util.Optional;
 @Controller
 public class AddCommentController {
 
-    private final CommentService commentService;
-    private final LibraryService libraryService;
-
-    @Autowired
-    public AddCommentController(CommentService commentService, LibraryService libraryService) {
-        this.commentService = commentService;
-        this.libraryService = libraryService;
-    }
-
-    @GetMapping("/addcomment")
-    public String addCommentPage(
-            Model model,
-            @RequestParam("id") Integer id
-    ) {
-        CommentDto commentDto = new CommentDto();
-        Optional<Book> optionalBook = libraryService.findBookById(id);
-        if (optionalBook.isPresent()){
-            commentDto.setBookTitle(optionalBook.get().getTitle());
-            commentDto.setBookId(optionalBook.get().getId());
-        }
-        model.addAttribute("commentDto", commentDto);
-        model.addAttribute("idBook", id);
-        return "addcomment";
-    }
-
-    @GetMapping("/addcomment/edit")
-    public String editCommentPage(
-            @RequestParam("id") Integer id,
-            Model model
-    ) {
-        CommentDto commentDto = new CommentDto();
-        Optional<Comment> optionalComment = commentService.findCommentById(id);
-        if(optionalComment.isPresent()) {
-            commentDto.setCommentContent(optionalComment.get().getContent());
-            commentDto.setBookId(optionalComment.get().getBook().getId());
-            commentDto.setId(optionalComment.get().getId());
-            model.addAttribute("idBook", optionalComment.get().getBook().getId());
-        }
-        model.addAttribute("commentDto", commentDto);
-
-        return "addcomment";
-    }
+//    private final CommentService commentService;
+//    private final LibraryService libraryService;
+//
+//    @Autowired
+//    public AddCommentController(CommentService commentService, LibraryService libraryService) {
+//        this.commentService = commentService;
+//        this.libraryService = libraryService;
+//    }
+//
+//    @GetMapping("/addcomment")
+//    public String addCommentPage(
+//            Model model,
+//            @RequestParam("id") Integer id
+//    ) {
+//        CommentDto commentDto = new CommentDto();
+//        Optional<Book> optionalBook = libraryService.findBookById(id);
+//        if (optionalBook.isPresent()){
+//            commentDto.setBookTitle(optionalBook.get().getTitle());
+//            commentDto.setBookId(optionalBook.get().getId());
+//        }
+//        model.addAttribute("commentDto", commentDto);
+//        model.addAttribute("idBook", id);
+//        return "addcomment";
+//    }
+//
+//    @GetMapping("/addcomment/edit")
+//    public String editCommentPage(
+//            @RequestParam("id") Integer id,
+//            Model model
+//    ) {
+//        CommentDto commentDto = new CommentDto();
+//        Optional<Comment> optionalComment = commentService.findCommentById(id);
+//        if(optionalComment.isPresent()) {
+//            commentDto.setCommentContent(optionalComment.get().getContent());
+//            commentDto.setBookId(optionalComment.get().getBook().getId());
+//            commentDto.setId(optionalComment.get().getId());
+//            model.addAttribute("idBook", optionalComment.get().getBook().getId());
+//        }
+//        model.addAttribute("commentDto", commentDto);
+//
+//        return "addcomment";
+//    }
 }
