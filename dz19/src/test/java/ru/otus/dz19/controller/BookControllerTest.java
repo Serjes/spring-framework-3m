@@ -7,11 +7,16 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz19.domain.*;
+import ru.otus.dz19.repository.UserRepository;
+import ru.otus.dz19.security.SecurityConfiguration;
 import ru.otus.dz19.service.CommentService;
 import ru.otus.dz19.service.LibraryService;
 
@@ -25,6 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookController.class)
+@WithMockUser(
+        username = "user",
+        authorities = {"ROLE_USER"}
+)
 public class BookControllerTest {
 
     @Autowired
@@ -36,8 +45,11 @@ public class BookControllerTest {
     @MockBean
     private CommentService commentService;
 
+    @MockBean
+    private UserRepository userRepository;
+
     @Configuration
-    @ComponentScan(basePackageClasses = {BookController.class})
+    @ComponentScan(basePackageClasses = {BookController.class, SecurityConfiguration.class})
     public static class TestConf {
     }
 
@@ -71,9 +83,8 @@ public class BookControllerTest {
 
     @Test
     public void delete() throws Exception {
-
         mvc.perform(post("/books/delete/").flashAttr("bookDto", bookDto))
-                .andExpect(redirectedUrl("/books"));
+                .andExpect(status().isForbidden());
 
     }
 
@@ -81,10 +92,25 @@ public class BookControllerTest {
     public void saveBook() throws Exception {
         mvc.perform(post("/books/add")
                 .flashAttr("bookDto", bookDto))
-                .andExpect(redirectedUrl("/books"));
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    public void updateBook() {
+    public void updateBook() throws Exception {
+        mvc.perform(post("/books/add/1")
+                .flashAttr("bookDto", bookDto))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void addBookPage() throws Exception {
+        mvc.perform(get("/addbook"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void editBookPage() throws Exception {
+        mvc.perform(get("/addbook/edit?id=1" ))
+                .andExpect(status().isForbidden());
     }
 }

@@ -9,6 +9,7 @@ import ru.otus.dz19.domain.BookDto;
 import ru.otus.dz19.service.LibraryService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BookController {
@@ -37,10 +38,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @RequestMapping(
-            value = {"/books/add"},
-            method = RequestMethod.POST
-    )
+    @PostMapping("/books/add")
     public String saveBook(
             @ModelAttribute("bookDto") BookDto bookDto
     ) {
@@ -50,10 +48,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @RequestMapping(
-            value = {"/books/add/{id}"},
-            method = RequestMethod.POST
-    )
+    @PostMapping("/books/add/{id}")
     public String updateBook(
             Model model,
             @ModelAttribute("bookDto") BookDto bookDto,
@@ -63,5 +58,25 @@ public class BookController {
                 bookDto.getAuthorName(), bookDto.getAuthorLastName(),
                 bookDto.getGenre());
         return "redirect:/books";
+    }
+
+    @GetMapping("/addbook")
+    public String addBookPage(Model model) {
+        BookDto bookDto = new BookDto();
+        model.addAttribute("bookDto", bookDto);
+        return "addbook";
+    }
+
+    @GetMapping("/addbook/edit")
+    public String editBookPage(
+            @RequestParam("id") Integer id,
+            Model model
+    ) {
+        Optional<Book> bookOptional = libraryService.findBookById(id);
+        if (bookOptional.isPresent()) {
+            BookDto bookDto = BookDto.toDto(bookOptional.get());
+            model.addAttribute("bookDto", bookDto);
+        }
+        return "addbook";
     }
 }

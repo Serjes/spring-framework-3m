@@ -9,11 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz19.domain.Author;
 import ru.otus.dz19.domain.Book;
 import ru.otus.dz19.domain.Genre;
+import ru.otus.dz19.repository.UserRepository;
 import ru.otus.dz19.service.CommentService;
 import ru.otus.dz19.service.LibraryService;
 
@@ -28,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AuthorController.class)
+@WithMockUser(
+        username = "user"
+)
 public class AuthorControllerTest {
 
     @Autowired
@@ -38,6 +43,9 @@ public class AuthorControllerTest {
 
     @MockBean
     private CommentService commentService;
+
+    @MockBean
+    private UserRepository userRepository;
 
     @Configuration
     @ComponentScan(basePackageClasses = {AuthorController.class})
