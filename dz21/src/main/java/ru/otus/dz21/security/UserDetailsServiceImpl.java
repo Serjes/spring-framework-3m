@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.dz21.domain.User;
 import ru.otus.dz21.repository.UserRepository;
 
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -34,9 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //    @PostConstruct
 //    public void init(){
 //        User user = new User();
-//        user.setName("user");
+//        user.setName("admin");
 //        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-//        user.setRole("USER");
+//        user.setRole("ADMIN");
 //        userRepository.save(user);
 //    }
 }
