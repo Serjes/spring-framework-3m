@@ -5,9 +5,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.dz21.domain.User;
 import ru.otus.dz21.repository.UserRepository;
+
+import javax.annotation.PostConstruct;
 
 
 @Service
@@ -35,9 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //    @PostConstruct
 //    public void init(){
 //        User user = new User();
-//        user.setName("admin");
+//        user.setName("user");
 //        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-//        user.setRole("ADMIN");
+//        user.setRole("USER");
 //        userRepository.save(user);
 //    }
 }

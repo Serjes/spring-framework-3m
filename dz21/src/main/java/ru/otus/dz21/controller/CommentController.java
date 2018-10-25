@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.dz21.domain.Book;
 import ru.otus.dz21.domain.Comment;
-import ru.otus.dz21.domain.CommentDto;
+import ru.otus.dz21.dto.CommentDto;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 

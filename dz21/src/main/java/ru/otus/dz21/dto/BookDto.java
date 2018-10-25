@@ -1,4 +1,6 @@
-package ru.otus.dz21.domain;
+package ru.otus.dz21.dto;
+
+import ru.otus.dz21.domain.Book;
 
 @SuppressWarnings("all")
 public class BookDto {

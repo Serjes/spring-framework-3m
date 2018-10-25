@@ -1,4 +1,4 @@
-package ru.otus.dz21.domain;
+package ru.otus.dz21.dto;
 
 public class CommentDto {
 

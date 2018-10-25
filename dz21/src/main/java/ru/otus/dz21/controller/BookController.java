@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.dz21.domain.Book;
-import ru.otus.dz21.domain.BookDto;
+import ru.otus.dz21.dto.BookDto;
 import ru.otus.dz21.service.LibraryService;
 
 import java.util.List;

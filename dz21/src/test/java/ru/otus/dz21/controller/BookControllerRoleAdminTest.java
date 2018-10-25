@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz21.domain.*;
+import ru.otus.dz21.dto.BookDto;
 import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.security.SecurityConfiguration;
 import ru.otus.dz21.service.CommentService;
