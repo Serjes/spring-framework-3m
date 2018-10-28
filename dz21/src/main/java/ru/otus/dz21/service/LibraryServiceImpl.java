@@ -1,6 +1,7 @@
 package ru.otus.dz21.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dz21.domain.Author;
@@ -83,6 +84,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     @Transactional(readOnly = true)
+//    @PostFilter("hasPermission(filterObject, 'READ')")
     public List<Book> listBooks() {
         return bookRepository.findAll();
 

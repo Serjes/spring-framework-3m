@@ -17,13 +17,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/", "/books").authenticated()
+//                .authorizeRequests().antMatchers("/", "/books").authenticated()
+                .authorizeRequests().antMatchers("/**").authenticated()
                 .and()
-                .authorizeRequests().antMatchers("/addbook/**", "/books/**").hasRole("ADMIN")
-                .and()
+//                .authorizeRequests().antMatchers("/addbook/**", "/books/**").hasRole("ADMIN")
+//                .and()
                 .formLogin()
                 .and()
-                .logout().logoutUrl("/logout");
+                .logout().logoutUrl("/logout")
+                .invalidateHttpSession(true);
     }
 
     @Bean
@@ -31,13 +33,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new UserDetailsServiceImpl();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-    }
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
     }
 }
