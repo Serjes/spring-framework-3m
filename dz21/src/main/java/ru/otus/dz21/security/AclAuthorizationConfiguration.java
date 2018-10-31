@@ -54,10 +54,10 @@ public class AclAuthorizationConfiguration {
         return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(), aclAuthorizationStrategy());
     }
 
-    @Bean
-    public LookupStrategy lookupStrategy(){
-        return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
-    }
+//    @Bean
+//    public LookupStrategy lookupStrategy(){
+//        return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
+//    }
 
     @Bean
     public JdbcMutableAclService aclService() {
@@ -70,6 +70,13 @@ public class AclAuthorizationConfiguration {
         AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
         expressionHandler.setPermissionEvaluator(permissionEvaluator);
         return expressionHandler;
+    }
+
+    @Bean
+    public LookupStrategy lookupStrategy() {
+        final BasicLookupStrategy lookupStrategy = new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
+        lookupStrategy.setLookupObjectIdentitiesWhereClause("(acl_object_identity.object_id_identity::text = ? and acl_class.class = ?)");
+        return lookupStrategy;
     }
 
 }

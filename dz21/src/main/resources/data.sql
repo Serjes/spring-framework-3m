@@ -32,10 +32,11 @@ INSERT INTO acl_entry
   (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
   VALUES
   (1, 1, 1, 2, 1, TRUE , TRUE , TRUE ),
-  (2, 1, 2, 3, 2, TRUE , TRUE , TRUE ),
+  (2, 1, 2, 3, 1, TRUE , TRUE , TRUE ),
   (3, 2, 1, 2, 1, TRUE , TRUE , TRUE ),
-  (4, 2, 2, 3, 2, TRUE , TRUE , TRUE ),
+  (4, 2, 2, 3, 1, TRUE , TRUE , TRUE ),
   (5, 3, 1, 2, 1, TRUE , TRUE , TRUE ),
-  (6, 3, 2, 3, 2, TRUE , TRUE , TRUE ),
-  (7, 4, 1, 2, 1, TRUE , TRUE , TRUE ),
-  (8, 4, 2, 3, 2, TRUE , TRUE , TRUE );
+  (6, 3, 2, 3, 1, TRUE , TRUE , TRUE ),
+  (7, 4, 1, 2, 0, TRUE , TRUE , TRUE ),
+  (8, 4, 2, 3, 1, TRUE , TRUE , TRUE ),
+  (9, 4, 3, 3, 2, TRUE , TRUE , TRUE );

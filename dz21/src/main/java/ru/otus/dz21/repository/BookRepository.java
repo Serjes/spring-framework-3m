@@ -21,7 +21,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 ////            filterTarget = "Book"
 //    )
 //    @PostAuthorize("hasPermission(returnObject, 'READ')")
-//    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ')")
 //    @Secured({"ROLE_ADMIN", "ROLE_ADVANCED_USER"})
     List<Book> findAll();
 
