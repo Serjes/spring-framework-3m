@@ -18,6 +18,7 @@ import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,9 @@ public class CommentControllerTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private DataSource dataSource;
 
     @Configuration
     @ComponentScan(basePackageClasses = {CommentController.class})

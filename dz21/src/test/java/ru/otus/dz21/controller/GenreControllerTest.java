@@ -19,6 +19,7 @@ import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class GenreControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private DataSource dataSource;
+
     @Configuration
     @ComponentScan(basePackageClasses = {GenreController.class})
     public static class TestConf {
@@ -68,7 +72,7 @@ public class GenreControllerTest {
     }
 
     @Test
-    public void commentsPage() throws Exception {
+    public void genresPage() throws Exception {
         Mockito.when(libraryService.listGenres()).thenReturn(genres);
         mvc.perform(get("/genres"))
                 .andExpect(status().isOk())

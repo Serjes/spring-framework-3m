@@ -17,11 +17,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .authorizeRequests().antMatchers("/", "/books").authenticated()
                 .authorizeRequests().antMatchers("/**").authenticated()
                 .and()
-//                .authorizeRequests().antMatchers("/addbook/**", "/books/**").hasRole("ADMIN")
-//                .and()
                 .formLogin()
                 .and()
                 .logout().logoutUrl("/logout")

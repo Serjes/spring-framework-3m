@@ -16,6 +16,8 @@ import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 
+import javax.sql.DataSource;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,6 +41,9 @@ public class IndexControllerTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private DataSource dataSource;
 
     @Configuration
     @ComponentScan(basePackageClasses = {IndexController.class})

@@ -19,6 +19,7 @@ import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class AuthorControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private DataSource dataSource;
+
     @Configuration
     @ComponentScan(basePackageClasses = {AuthorController.class})
     public static class TestConf {
@@ -68,7 +72,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void commentsPage() throws Exception {
+    public void authorsPage() throws Exception {
         Mockito.when(libraryService.listAuthors()).thenReturn(authors);
         mvc.perform(get("/authors"))
                 .andExpect(status().isOk())

@@ -37,28 +37,25 @@
     </thead>
     <tbody>
     <tr th:each="comment : ${comments}">
-        <td width="30" th:text="${comment.id}" ></td>
-        <td width="350" th:text="${comment.content}" ></td>
-        <td width="150" th:text="${comment.book.title}" ></td>
-        <td width="50"  ><a th:href="@{/addcomment/edit(id=${comment.id})}" href="addcomment.html">Изменить</a></td>
+        <td width="30" th:text="${comment.id}"></td>
+        <td width="350" th:text="${comment.content}"></td>
+        <td width="150" th:text="${comment.book.title}"></td>
+        <td width="50"><a th:href="@{/addcomment/edit(id=${comment.id})}" href="addcomment.html">Изменить</a></td>
     </tr>
     </tbody>
 </table>
-<br>
-<a th:href="@{/addcomment(id=${bookId})}" href="addcomment.html"><h3>Добавить комментарий</h3></a>
-<br>
-<br>
-
+<p>
+    <a th:href="@{/addcomment(id=${bookId})}" href="addcomment.html"><h3>Добавить комментарий</h3></a>
+</p>
 <form id="edit-form" th:action="@{/comments/delete/}" th:method="POST">
     <h3>Удаление комментария:</h3>
     <div class="row">
         <label for="commentId-input">ID:</label>
-        <input id="commentId-input" type="text" th:field="${commentDto.id}" value="1" />
+        <input id="commentId-input" type="text" th:field="${commentDto.id}" value="1"/>
     </div>
     <div class="row">
         <button width="150" type="submit">Удалить</button>
     </div>
 </form>
-
 </body>
 </html>

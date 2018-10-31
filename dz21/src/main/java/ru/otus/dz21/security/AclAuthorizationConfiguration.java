@@ -13,7 +13,6 @@ import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.sql.DataSource;
@@ -51,13 +50,9 @@ public class AclAuthorizationConfiguration {
     @Bean
     public EhCacheBasedAclCache aclCache()
     {
-        return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(), aclAuthorizationStrategy());
+        return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(),
+                aclAuthorizationStrategy());
     }
-
-//    @Bean
-//    public LookupStrategy lookupStrategy(){
-//        return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
-//    }
 
     @Bean
     public JdbcMutableAclService aclService() {
@@ -74,8 +69,10 @@ public class AclAuthorizationConfiguration {
 
     @Bean
     public LookupStrategy lookupStrategy() {
-        final BasicLookupStrategy lookupStrategy = new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
-        lookupStrategy.setLookupObjectIdentitiesWhereClause("(acl_object_identity.object_id_identity::text = ? and acl_class.class = ?)");
+        final BasicLookupStrategy lookupStrategy = new BasicLookupStrategy(dataSource, aclCache(),
+                aclAuthorizationStrategy(), new ConsoleAuditLogger());
+        lookupStrategy.setLookupObjectIdentitiesWhereClause(
+                "(acl_object_identity.object_id_identity::text = ? and acl_class.class = ?)");
         return lookupStrategy;
     }
 

@@ -12,7 +12,6 @@ import ru.otus.dz21.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -21,7 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-
         User user = userRepository.findByName(name);
         UserBuilder builder = null;
         if (user != null) {
@@ -31,7 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("User not found.");
         }
-
         return builder.build();
     }
 
