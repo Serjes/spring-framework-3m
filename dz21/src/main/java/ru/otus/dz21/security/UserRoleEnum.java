@@ -1,7 +1,7 @@
 package ru.otus.dz21.security;
 
 public enum UserRoleEnum {
-    ADMIN,
-    ADVANCED_USER,
-    USER
+    ROLE_ADMIN,
+    ROLE_ADVANCED_USER,
+    ROLE_USER
 }

@@ -1,12 +1,17 @@
 package ru.otus.dz21.controller;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -15,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dz21.domain.*;
 import ru.otus.dz21.dto.BookDto;
 import ru.otus.dz21.repository.UserRepository;
+import ru.otus.dz21.security.AclAuthorizationConfiguration;
+import ru.otus.dz21.security.AclConfiguration;
 import ru.otus.dz21.security.SecurityConfiguration;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
@@ -26,13 +33,15 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookController.class)
 @WithMockUser(
-        username = "user",
+//        username = "user",
         authorities = {"ROLE_USER"}
+//        authorities = {UserRoleEnum}
 )
 public class BookControllerTest {
 
@@ -48,12 +57,29 @@ public class BookControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private DataSource dataSource;
+//    @MockBean
+//    @Autowired
+//    private DataSource dataSource;
 
     @Configuration
-    @ComponentScan(basePackageClasses = {BookController.class, SecurityConfiguration.class})
+    @ConfigurationProperties("application")
+    @ComponentScan(basePackageClasses = {BookController.class, SecurityConfiguration.class,
+            AclConfiguration.class, AclAuthorizationConfiguration.class})
     public static class TestConf {
+
+//        private String url;
+        @Bean
+        DataSource dataSource() {
+            HikariConfig dataSourceConfig = new HikariConfig();
+            dataSourceConfig.setJdbcUrl("jdbc:h2:mem:testdb");
+//            dataSourceConfig.setSchema("classpath:/schema.sql");
+//            dataSourceConfig.set
+//            dataSourceConfig.setData
+//            dataSourceConfig.setJdbcUrl(spring.datasource.url);
+//            dataSourceConfig.setUsername(env.getRequiredProperty("spring.datasource.username"));
+//            dataSourceConfig.setPassword(env.getRequiredProperty("spring.datasource.password"));
+            return new HikariDataSource(dataSourceConfig);
+        }
     }
 
     private Author author;
@@ -71,8 +97,10 @@ public class BookControllerTest {
         genre.setId(1);
         book = new Book("Война и мир", author, genre);
         comment = new Comment("Эпично, но слишком затянуто.", book);
+        book.setId(1);
         books = Arrays.asList(book);
         bookDto = new BookDto(1, "Мертвые души", "Николай", "Гоголь", "поэма");
+
     }
 
     @Test
@@ -80,6 +108,7 @@ public class BookControllerTest {
         Mockito.when(libraryService.listBooks()).thenReturn(books);
         mvc.perform(get("/books"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().string(containsString(book.getTitle())))
                 .andExpect(view().name("books"));
     }
