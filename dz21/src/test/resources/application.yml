@@ -3,13 +3,21 @@ application:
 spring:
   shell:
     interactive:
-      enabled: false
+      enabled: none
   datasource:
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+#    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     initialization-mode: always
     schema: classpath:schema.sql
+#    schema: classpath:/schema.sql
     data: classpath:data.sql
+#    data: data.sql
     username: sa
     password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+#    generate-ddl: true

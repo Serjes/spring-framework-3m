@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,15 +40,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookController.class)
+//@ConfigurationProperties("application")
+//@SpringBootTest
 @WithMockUser(
-//        username = "user",
+        username = "user",
         authorities = {"ROLE_USER"}
+//        roles = {"USER"}
 //        authorities = {UserRoleEnum}
 )
 public class BookControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 
     @MockBean
     private LibraryService libraryService;
@@ -61,25 +69,50 @@ public class BookControllerTest {
 //    @Autowired
 //    private DataSource dataSource;
 
+
     @Configuration
     @ConfigurationProperties("application")
     @ComponentScan(basePackageClasses = {BookController.class, SecurityConfiguration.class,
             AclConfiguration.class, AclAuthorizationConfiguration.class})
     public static class TestConf {
 
-//        private String url;
+        @Value("${spring.datasource.url}")
+        private String dataSourceUrl;
+
+        @Value("${spring.datasource.schema}")
+        private String dataSourceSchema;
+
+        //        private String url;
         @Bean
         DataSource dataSource() {
             HikariConfig dataSourceConfig = new HikariConfig();
-            dataSourceConfig.setJdbcUrl("jdbc:h2:mem:testdb");
-//            dataSourceConfig.setSchema("classpath:/schema.sql");
+//            dataSourceConfig.setJdbcUrl("jdbc:h2:mem:testdb");
+            dataSourceConfig.setJdbcUrl(dataSourceUrl);
+            dataSourceConfig.setSchema(dataSourceSchema);
 //            dataSourceConfig.set
 //            dataSourceConfig.setData
-//            dataSourceConfig.setJdbcUrl(spring.datasource.url);
 //            dataSourceConfig.setUsername(env.getRequiredProperty("spring.datasource.username"));
 //            dataSourceConfig.setPassword(env.getRequiredProperty("spring.datasource.password"));
             return new HikariDataSource(dataSourceConfig);
         }
+
+//        @Bean
+//        public DataSource dataSource() {
+//            return new HikariDataSource();
+//        }
+
+//        @Bean
+////        @Profile("test")
+//        public DataSource dataSource() {
+//            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//            dataSource.setDriverClassName("org.h2.Driver");
+//            dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
+//            dataSource.setUsername("sa");
+//            dataSource.setPassword("sa");
+//            dataSource.setSchema("data.sql");
+////            dataSource.("schema.sql");
+//            return dataSource;
+//        }
     }
 
     private Author author;
