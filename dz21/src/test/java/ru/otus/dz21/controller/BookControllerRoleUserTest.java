@@ -30,7 +30,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,10 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @EnableWebMvc
 @WithMockUser(
-//        username = "advuser",
         username = "user",
         authorities = {"ROLE_USER"}
-//        authorities = {"ROLE_ADVANCED_USER"}
 )
 public class BookControllerRoleUserTest {
 
@@ -50,7 +47,6 @@ public class BookControllerRoleUserTest {
 
     private MockMvc mvc;
 
-//    @MockBean
     @Autowired
     private LibraryService libraryService;
 
@@ -93,7 +89,6 @@ public class BookControllerRoleUserTest {
         book.setId(1);
 
         bookRepositoryJpa.save(book);
-//        libraryService.saveBook(book);
 
         books = Arrays.asList(book);
         bookDto = new BookDto(3, "Мертвые души", "Николай", "Гоголь", "поэма");
@@ -102,46 +97,11 @@ public class BookControllerRoleUserTest {
 
     @Test
     public void booksPage() throws Exception {
-//        Mockito.when(libraryService.listBooks()).thenReturn(books);
         mvc.perform(get("/books"))
-//                .andExpect(status().isForbidden())
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(not(containsString(book.getTitle()))))
-//                .andExpect(content().string(containsString(book.getTitle())))
                 .andExpect(view().name("books"));
     }
 
-//    @Test
-//    public void delete() throws Exception {
-//        mvc.perform(post("/books/delete/").flashAttr("bookDto", bookDto))
-//                .andExpect(status().isForbidden());
-//
-//    }
-//
-//    @Test
-//    public void saveBook() throws Exception {
-//        mvc.perform(post("/books/add")
-//                .flashAttr("bookDto", bookDto))
-//                .andExpect(status().isForbidden());
-//    }
-//
-//    @Test
-//    public void updateBook() throws Exception {
-//        mvc.perform(post("/books/add/1")
-//                .flashAttr("bookDto", bookDto))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    public void addBookPage() throws Exception {
-//        mvc.perform(get("/addbook"))
-//                .andExpect(status().isForbidden());
-//    }
-//
-//    @Test
-//    public void editBookPage() throws Exception {
-//        mvc.perform(get("/addbook/edit?id=1" ))
-//                .andExpect(status().isForbidden());
-//    }
 }
