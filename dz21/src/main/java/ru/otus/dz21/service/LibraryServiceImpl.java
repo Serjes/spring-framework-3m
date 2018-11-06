@@ -84,7 +84,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     @Transactional(readOnly = true)
-//    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ')")
     public List<Book> listBooks() {
         return bookRepository.findAll();
 
