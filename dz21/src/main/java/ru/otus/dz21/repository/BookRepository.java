@@ -14,20 +14,12 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-//    @PostFilter("hasPermission(filterObject, 'READ')")
-//    @Secured({"ROLE_ADMIN", "ROLE_ADVANCED_USER"})
     List<Book> findAll();
 
-    //    @PostAuthorize("hasPermission(returnObject., 'READ')")
-//    @PreFilter(
-//            value = "hasPermission(filterObject, 'READ')",
-//            filterTarget = "Integer"
-//    )
     Optional<Book> findById(Integer id);
 
     void deleteById(Integer id);
 
-    @PreAuthorize("hasPermission(#book, 'write')")
     Book save(@Param("book") Book book);
 
 }

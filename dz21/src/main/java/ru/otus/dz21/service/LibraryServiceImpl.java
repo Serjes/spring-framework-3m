@@ -2,6 +2,7 @@ package ru.otus.dz21.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dz21.domain.Author;
@@ -126,6 +127,12 @@ public class LibraryServiceImpl implements LibraryService {
         String authorNotFound = authorOptional.map(a -> "author ID: " + a.getId())
                 .orElse("Такой автор не найден");
         System.out.println(authorNotFound);
+    }
+
+    @Override
+    @PreAuthorize("hasPermission(#book, 'write')")
+    public void saveBook(Book book) {
+        bookRepository.save(book);
     }
 
     @Override

@@ -84,26 +84,26 @@ public class CommentControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void saveComment() throws Exception {
-        mvc.perform(post("/comments/add")
-                .flashAttr("commentDto", commentDto))
-                .andExpect(redirectedUrl("/comments?book-id=1"));
-    }
-
-    @Test
-    public void updateComment() throws Exception {
-        mvc.perform(post("/comments/add")
-                .flashAttr("commentDto", commentDto))
-                .andExpect(redirectedUrl("/comments?book-id=1"));
-    }
-
-    @Test
-    public void deleteComment() throws Exception {
-        mvc.perform(post("/comments/add")
-                .flashAttr("commentDto", commentDto))
-                .andExpect(redirectedUrl("/comments?book-id=1"));
-    }
+//    @Test
+//    public void saveComment() throws Exception {
+//        mvc.perform(post("/comments/add")
+//                .flashAttr("commentDto", commentDto))
+//                .andExpect(redirectedUrl("/comments?book-id=1"));
+//    }
+//
+//    @Test
+//    public void updateComment() throws Exception {
+//        mvc.perform(post("/comments/add")
+//                .flashAttr("commentDto", commentDto))
+//                .andExpect(redirectedUrl("/comments?book-id=1"));
+//    }
+//
+//    @Test
+//    public void deleteComment() throws Exception {
+//        mvc.perform(post("/comments/add")
+//                .flashAttr("commentDto", commentDto))
+//                .andExpect(redirectedUrl("/comments?book-id=1"));
+//    }
 
     @Test
     public void addCommentPage() throws Exception {

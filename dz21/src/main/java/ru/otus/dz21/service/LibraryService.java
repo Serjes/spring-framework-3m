@@ -33,4 +33,6 @@ public interface LibraryService {
 
     void printAuthorId(String name, String lastName);
 
+    void saveBook(Book book);
+
 }
