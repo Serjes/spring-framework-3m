@@ -1,0 +1,24 @@
+application:
+  version: 7.0
+spring:
+  datasource:
+    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_sec
+    username: temp_user
+    password: temp_pas
+    driver-class-name: org.postgresql.Driver
+    schema: classpath:schema.sql
+    data: classpath:data.sql
+    initialization-mode: always
+  shell:
+    interactive:
+      enabled: none
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: none
