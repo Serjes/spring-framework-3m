@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ru.otus.dz21.domain.*;
-import ru.otus.dz21.dto.BookDto;
 import ru.otus.dz21.repository.AuthorRepository;
 import ru.otus.dz21.repository.BookRepository;
 import ru.otus.dz21.repository.GenreRepository;
@@ -21,9 +20,8 @@ import ru.otus.dz21.repository.UserRepository;
 import ru.otus.dz21.service.CommentService;
 import ru.otus.dz21.service.LibraryService;
 
-import java.util.List;
-
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,10 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableWebMvc
-@WithMockUser(
-        username = "advuser",
-        authorities = {"ROLE_ADVANCED_USER"}
-)
 public class BookControllerTest {
 
     @Autowired
@@ -63,9 +57,6 @@ public class BookControllerTest {
     private Author author;
     private Genre genre;
     private Book book;
-    private Comment comment;
-    private List<Book> books;
-    private BookDto bookDto;
 
     @Before
     public void setUp() throws Exception {
@@ -73,25 +64,42 @@ public class BookControllerTest {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
         author = new Author("Лев", "Толстой");
-        author.setId(2);
+        author.setId(1);
         authorRepositoryJpa.save(author);
 
         genre = new Genre("роман-эпопея");
-        genre.setId(2);
+        genre.setId(1);
         genreRepositoryJpa.save(genre);
 
         book = new Book("Война и мир", author, genre);
-        book.setId(2);
+        book.setId(1);
         bookRepositoryJpa.save(book);
 
     }
 
     @Test
+    @WithMockUser(
+            username = "advuser",
+            authorities = {"ROLE_ADVANCED_USER"}
+    )
     public void booksPage() throws Exception {
         mvc.perform(get("/books"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString(book.getTitle())))
+                .andExpect(view().name("books"));
+    }
+
+    @Test
+    @WithMockUser(
+            username = "user",
+            authorities = {"ROLE_USER"}
+    )
+    public void booksPageAccessDenied() throws Exception {
+        mvc.perform(get("/books"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().string(not(containsString(book.getTitle()))))
                 .andExpect(view().name("books"));
     }
 

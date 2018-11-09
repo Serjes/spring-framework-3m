@@ -1,6 +1,7 @@
 package ru.otus.dz21.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Book {
     private Genre genre;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public Book() {
     }

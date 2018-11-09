@@ -20,6 +20,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     void deleteById(Integer id);
 
-    Book save(@Param("book") Book book);
+    Book save(Book book);
 
 }

@@ -32,12 +32,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return builder.build();
     }
 
-//    @PostConstruct
-//    public void init(){
-//        User user = new User();
-//        user.setName("user");
-//        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-//        user.setRole("USER");
-//        userRepository.save(user);
-//    }
 }

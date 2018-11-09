@@ -1,6 +1,7 @@
 package ru.otus.dz21.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Author {
     private String lastName;
 
     @OneToMany(mappedBy="author", fetch=FetchType.LAZY, orphanRemoval = true)
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Author() {
     }
@@ -51,4 +52,5 @@ public class Author {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 }

@@ -1,6 +1,7 @@
 package ru.otus.dz21.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,7 @@ public class LibraryServiceImpl implements LibraryService {
             book.setTitle(title);
             book.setAuthor(author);
             book.setGenre(genre);
-            bookRepository.save(book);
+            saveBook(book);
         }
 
     }
@@ -131,7 +132,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     @PreAuthorize("hasPermission(#book, 'write')")
-    public void saveBook(Book book) {
+    public void saveBook(@Param("book") Book book) {
         bookRepository.save(book);
     }
 
