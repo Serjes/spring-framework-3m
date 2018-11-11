@@ -18,7 +18,7 @@ public class PersistenceSqlContext {
     public Environment env;
 
     @Bean
-    DataSource dataSource() {
+    public DataSource dataSource() {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setJdbcUrl(env.getRequiredProperty("spring.datasource.url"));
         dataSourceConfig.setUsername(env.getRequiredProperty("spring.datasource.username"));
