@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConfigurationProperties("application")
-public class PersistenceSqlContext {
+public class SqlConfig {
 
     @Autowired
     public Environment env;

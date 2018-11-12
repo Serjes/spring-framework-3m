@@ -7,6 +7,7 @@ import ru.otus.dz23.domain.Book;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface BookRepository extends PagingAndSortingRepository<Book, Integer> {
 
     List<Book> findAll();

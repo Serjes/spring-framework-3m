@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
 #    schema: classpath:schema.sql
 #    data: classpath:data.sql
-#    initialization-mode: always
+    initialization-mode: never
   data:
     mongodb:
       authentication-database: admin
@@ -25,8 +25,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-#        temp:
-#          use_jdbc_metadata_defaults: false
+        temp:
+          use_jdbc_metadata_defaults: false
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
       ddl-auto: none
