@@ -1,8 +1,10 @@
 application:
   version: 1.0
 spring:
+  batch:
+    initialize-schema: always
   datasource:
-    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
+    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_data
     username: temp_user
     password: temp_pas
     driver-class-name: org.postgresql.Driver
@@ -15,8 +17,8 @@ spring:
       host: 188.227.18.141
       port: 27017
       database: lib_batch
-      username: sergya
-      password: 54321
+      username: userbatch
+      password: batchbatch
 #  shell:
 #    interactive:
 #      enabled: none
