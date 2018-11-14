@@ -16,7 +16,6 @@ public class MongoAuthor {
     private String firstName;
     @Field("lastName")
     private String lastName;
-    private List<MongoBook> mongoBooks = new ArrayList<>();
 
     public MongoAuthor() {
     }
@@ -38,8 +37,8 @@ public class MongoAuthor {
         return lastName;
     }
 
-    public List<MongoBook> getMongoBooks() {
-        return mongoBooks;
-    }
+//    public List<MongoBook> getMongoBooks() {
+//        return mongoBooks;
+//    }
 
 }

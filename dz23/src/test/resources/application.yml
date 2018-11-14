@@ -1,23 +1,30 @@
+application:
+  version: 1.0t
 spring:
   jpa:
     hibernate:
       ddl-auto: none
   data:
     mongodb:
+#      port: 0
+#      authentication-database: admin
+#      authentication: none
       database: batch
       host: localhost
-      port: 12345
+#      port: 53146
+      port: 0
       username:
       password:
+#      authentication-database: none
   datasource:
     url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
     username: temp_user
     password: temp_pas
     driver-class-name: org.postgresql.Driver
     initialization-mode: never
-  shell:
-    interactive:
-      enabled: false
-  batch:
-    job:
-      enabled: false
+#  shell:
+#    interactive:
+#      enabled: false
+#  batch:
+#    job:
+#      enabled: false

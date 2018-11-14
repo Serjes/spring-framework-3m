@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
-import ru.otus.dz23.domain.Author;
-import ru.otus.dz23.domain.Book;
-import ru.otus.dz23.domain.MongoAuthor;
-import ru.otus.dz23.domain.MongoBook;
+import ru.otus.dz23.domain.*;
 import ru.otus.dz23.mongorepository.MongoAuthorRepository;
 import ru.otus.dz23.mongorepository.MongoBookRepository;
 import ru.otus.dz23.repository.AuthorRepository;
@@ -147,7 +144,10 @@ public class BatchConfig {
         return new ItemProcessor<Book, MongoBook>() {
             @Override
             public MongoBook process(Book book) throws Exception {
-                MongoBook mongoBook = new MongoBook(book.getTittle(), null, null);
+
+                Author author = book.getAuthor();
+                MongoAuthor mongoAuthor = new MongoAuthor(author.getFirstName(), author.getLastName());
+                MongoBook mongoBook = new MongoBook(book.getTittle(), mongoAuthor, null);
                 logger.info("Book: " + book.getTittle());
                 return mongoBook;
             }

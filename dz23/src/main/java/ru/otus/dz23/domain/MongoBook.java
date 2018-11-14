@@ -12,7 +12,6 @@ public class MongoBook {
     private String id;
     @Field("tittle")
     private String tittle;
-    @DBRef
     private MongoAuthor mongoAuthor;
     @DBRef
     private MongoGenre mongoGenre;
