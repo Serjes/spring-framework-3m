@@ -8,8 +8,6 @@ spring:
     username: temp_user
     password: temp_pas
     driver-class-name: org.postgresql.Driver
-#    schema: classpath:schema.sql
-#    data: classpath:data.sql
     initialization-mode: never
   data:
     mongodb:
@@ -19,9 +17,6 @@ spring:
       database: lib_batch
       username: userbatch
       password: batchbatch
-#  shell:
-#    interactive:
-#      enabled: none
   jpa:
     show-sql: true
     properties:
@@ -32,5 +27,3 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
       ddl-auto: none
-#  batch:
-#    initialize-schema: ALWAYS

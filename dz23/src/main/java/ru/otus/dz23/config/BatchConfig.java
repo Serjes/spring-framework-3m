@@ -28,7 +28,6 @@ import ru.otus.dz23.repository.AuthorRepository;
 import ru.otus.dz23.repository.BookRepository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -77,32 +76,6 @@ public class BatchConfig {
                 .reader(bookReader())
                 .processor(bookProcessor())
                 .writer(bookWriter)
-                .listener(new ItemReadListener() {
-                    public void beforeRead() {
-                        logger.info("Начало чтения");
-                    }
-
-                    public void afterRead(Object o) {
-                        logger.info("Конец чтения");
-                    }
-
-                    public void onReadError(Exception e) {
-                        logger.info("Ошибка чтения");
-                    }
-                })
-                .listener(new ItemWriteListener() {
-                    public void beforeWrite(List list) {
-                        logger.info("Начало записи");
-                    }
-
-                    public void afterWrite(List list) {
-                        logger.info("Конец записи");
-                    }
-
-                    public void onWriteError(Exception e, List list) {
-                        logger.info("Ошибка записи");
-                    }
-                })
                 .listener(new ItemProcessListener() {
                     public void beforeProcess(Object o) {
                         logger.info("Начало обработки");
@@ -140,6 +113,32 @@ public class BatchConfig {
                 .reader(authorReader())
                 .processor(authorProcessor())
                 .writer(authorWriter)
+                .listener(new ItemProcessListener() {
+                    public void beforeProcess(Object o) {
+                        logger.info("Начало обработки");
+                    }
+
+                    public void afterProcess(Object o, Object o2) {
+                        logger.info("Конец обработки");
+                    }
+
+                    public void onProcessError(Object o, Exception e) {
+                        logger.info("Ошбка обработки");
+                    }
+                })
+                .listener(new ChunkListener() {
+                    public void beforeChunk(ChunkContext chunkContext) {
+                        logger.info("Начало пачки");
+                    }
+
+                    public void afterChunk(ChunkContext chunkContext) {
+                        logger.info("Конец пачки");
+                    }
+
+                    public void afterChunkError(ChunkContext chunkContext) {
+                        logger.info("Ошибка пачки");
+                    }
+                })
                 .build();
     }
 
@@ -148,10 +147,7 @@ public class BatchConfig {
         return new ItemProcessor<Book, MongoBook>() {
             @Override
             public MongoBook process(Book book) throws Exception {
-//                person.onBirthDay();
-//                person.setName("Мистер " + person.getName());
                 MongoBook mongoBook = new MongoBook(book.getTittle(), null, null);
-//                System.out.println(book.getTittle());
                 logger.info("Book: " + book.getTittle());
                 return mongoBook;
             }
@@ -193,19 +189,6 @@ public class BatchConfig {
                 .saveState(false)
                 .build();
     }
-
-//    @Bean
-//    public ItemWriter<MongoBook> writer() {
-//        MongoItemWriter<MongoBook> writer = new MongoItemWriter<>();
-//        try {
-////            writer.setTemplate(mongoTemplate());
-//            writer.setTemplate(mongoTemplate);
-//        } catch (Exception e) {
-//            logger.error(e.toString());
-//        }
-//        writer.setCollection("books");
-//        return writer;
-//    }
 
     @Bean
     public RepositoryItemWriter<MongoBook> bookWriter(MongoBookRepository mongoBookRepository) {

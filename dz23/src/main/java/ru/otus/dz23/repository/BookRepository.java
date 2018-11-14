@@ -12,10 +12,4 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Integer
 
     List<Book> findAll();
 
-//    Optional<Book> findById(Integer id);
-//
-//    void deleteById(Integer id);
-//
-//    Book save(Book book);
-
 }

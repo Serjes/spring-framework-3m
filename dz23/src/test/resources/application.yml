@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  data:
+    mongodb:
+      database: batch
+      host: localhost
+      port: 12345
+      username:
+      password:
+  datasource:
+    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
+    username: temp_user
+    password: temp_pas
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: never
+  shell:
+    interactive:
+      enabled: false
+  batch:
+    job:
+      enabled: false

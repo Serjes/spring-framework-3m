@@ -11,10 +11,4 @@ public interface AuthorRepository extends PagingAndSortingRepository<Author, Int
 
     List<Author> findAll();
 
-//    Optional<Book> findById(Integer id);
-//
-//    void deleteById(Integer id);
-//
-//    Book save(Book book);
-
 }
