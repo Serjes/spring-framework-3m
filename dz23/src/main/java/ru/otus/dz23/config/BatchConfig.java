@@ -12,15 +12,19 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
+import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.dz23.domain.Book;
 import ru.otus.dz23.domain.MongoAuthor;
 import ru.otus.dz23.domain.MongoBook;
+import ru.otus.dz23.mongorepository.MongoBookRepository;
 import ru.otus.dz23.repository.BookRepository;
 
 import java.util.HashMap;
@@ -43,10 +47,10 @@ public class BatchConfig {
     private BookRepository bookRepositoryJpa;
 
 //    @Autowired
-//    private MongDbBookRepository mongoBookRepository;
+//    private MongoBookRepository mongoBookRepository;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+//    @Autowired
+//    private MongoTemplate mongoTemplate;
 
     @Bean
     public Job importLibJob(Step step1) {
@@ -139,7 +143,8 @@ public class BatchConfig {
 //                person.onBirthDay();
 //                person.setName("Мистер " + person.getName());
 //                MongoBook mongoBook = new MongoBook(book.getTitle(), book.getAuthor(), book.getGenre());
-                MongoBook mongoBook = new MongoBook(book.getTitle(), null, null);
+                MongoBook mongoBook = new MongoBook(book.getTittle(), null, null);
+                System.out.println(book.getTittle());
 //                mongoBook
 
                 return mongoBook;
@@ -168,18 +173,27 @@ public class BatchConfig {
     }
 
 
+//    @Bean
+//    public ItemWriter<MongoBook> writer() {
+//        MongoItemWriter<MongoBook> writer = new MongoItemWriter<>();
+//        try {
+////            writer.setTemplate(mongoTemplate());
+//            writer.setTemplate(mongoTemplate);
+//        } catch (Exception e) {
+//            logger.error(e.toString());
+//        }
+//        writer.setCollection("books");
+//        return writer;
+//    }
+
     @Bean
-    public ItemWriter<MongoBook> writer() {
-        MongoItemWriter<MongoBook> writer = new MongoItemWriter<>();
-        try {
-//            writer.setTemplate(mongoTemplate());
-            writer.setTemplate(mongoTemplate);
-        } catch (Exception e) {
-            logger.error(e.toString());
-        }
-        writer.setCollection("books");
-        return writer;
+    public RepositoryItemWriter<MongoBook> writer(MongoBookRepository mongoBookRepository) {
+        return new RepositoryItemWriterBuilder<MongoBook>()
+                .repository(mongoBookRepository)
+                .methodName("save")
+                .build();
     }
+
 
 }
 

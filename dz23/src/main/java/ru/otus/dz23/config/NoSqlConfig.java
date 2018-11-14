@@ -53,7 +53,7 @@ public class NoSqlConfig extends AbstractMongoConfiguration {
         return new MongoClient(Collections.singletonList(new ServerAddress(databaseAddress, databasePort)),
 //                Collections.singletonList(MongoCredential.createScramSha1Credential(username, databaseName, password.toCharArray())));
 //                Collections.singletonList(MongoCredential.createScramSha1Credential("sergya2", databaseName, "54321".toCharArray())));
-                Collections.singletonList(MongoCredential.createScramSha1Credential("userbatch", databaseName, "batchbatch".toCharArray())));
+                Collections.singletonList(MongoCredential.createCredential("userbatch", databaseName, "batchbatch".toCharArray())));
     }
 
 //    @Bean
