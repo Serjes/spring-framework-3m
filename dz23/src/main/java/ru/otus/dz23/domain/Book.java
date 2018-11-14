@@ -11,8 +11,8 @@ public class Book {
     @Column(name="id", nullable = false)
     private Integer id;
 
-    @Column(name="tittle")
-    private String tittle;
+    @Column(name="title")
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -25,8 +25,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(String tittle, Author author, Genre genre) {
-        this.tittle = tittle;
+    public Book(String title, Author author, Genre genre) {
+        this.title = title;
         this.author = author;
         this.genre = genre;
     }
@@ -40,7 +40,7 @@ public class Book {
     }
 
     public String getTittle() {
-        return tittle;
+        return title;
     }
 
     public Integer getId() {
@@ -51,8 +51,8 @@ public class Book {
         this.id = id;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTittle(String title) {
+        this.title = title;
     }
 
     public void setAuthor(Author author) {
@@ -67,7 +67,7 @@ public class Book {
     public String toString() {
         return "MongoBook{" +
                 "id=" + id +
-                ", tittle='" + tittle + '\'' +
+                ", tittle='" + title + '\'' +
                 '}';
     }
 }

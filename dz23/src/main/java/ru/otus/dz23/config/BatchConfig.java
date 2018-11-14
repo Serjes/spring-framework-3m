@@ -10,7 +10,6 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
@@ -19,12 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import ru.otus.dz23.domain.Author;
 import ru.otus.dz23.domain.Book;
 import ru.otus.dz23.domain.MongoAuthor;
 import ru.otus.dz23.domain.MongoBook;
+import ru.otus.dz23.mongorepository.MongoAuthorRepository;
 import ru.otus.dz23.mongorepository.MongoBookRepository;
+import ru.otus.dz23.repository.AuthorRepository;
 import ru.otus.dz23.repository.BookRepository;
 
 import java.util.HashMap;
@@ -46,17 +46,15 @@ public class BatchConfig {
     @Autowired
     private BookRepository bookRepositoryJpa;
 
-//    @Autowired
-//    private MongoBookRepository mongoBookRepository;
-
-//    @Autowired
-//    private MongoTemplate mongoTemplate;
+    @Autowired
+    private AuthorRepository authorRepositoryJpa;
 
     @Bean
-    public Job importLibJob(Step step1) {
+    public Job importLibJob(Step step1, Step step2) {
         return jobBuilderFactory.get("importLibJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(step1)
+                .next(step2)
                 .end()
                 .listener(new JobExecutionListener() {
                     @Override
@@ -73,12 +71,12 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step1(ItemWriter writer) {
+    public Step step1(ItemWriter bookWriter) {
         return stepBuilderFactory.get("step1")
                 .chunk(3)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer)
+                .reader(bookReader())
+                .processor(bookProcessor())
+                .writer(bookWriter)
                 .listener(new ItemReadListener() {
                     public void beforeRead() {
                         logger.info("Начало чтения");
@@ -136,32 +134,44 @@ public class BatchConfig {
     }
 
     @Bean
-    public ItemProcessor processor() {
+    public Step step2(ItemWriter authorWriter) {
+        return stepBuilderFactory.get("step2")
+                .chunk(3)
+                .reader(authorReader())
+                .processor(authorProcessor())
+                .writer(authorWriter)
+                .build();
+    }
+
+    @Bean
+    public ItemProcessor bookProcessor() {
         return new ItemProcessor<Book, MongoBook>() {
             @Override
             public MongoBook process(Book book) throws Exception {
 //                person.onBirthDay();
 //                person.setName("Мистер " + person.getName());
-//                MongoBook mongoBook = new MongoBook(book.getTitle(), book.getAuthor(), book.getGenre());
                 MongoBook mongoBook = new MongoBook(book.getTittle(), null, null);
-                System.out.println(book.getTittle());
-//                mongoBook
-
+//                System.out.println(book.getTittle());
+                logger.info("Book: " + book.getTittle());
                 return mongoBook;
             }
         };
     }
 
-//    @Bean
-//    public RepositoryItemWriter<WagerActivity> writer() {
-//        RepositoryItemWriter<WagerActivity> writer = new RepositoryItemWriter<>();
-//        writer.setRepository(wagerActivityRepository);
-//        writer.setMethodName("save");
-//        return writer;
-//    }
+    @Bean
+    public ItemProcessor authorProcessor() {
+        return new ItemProcessor<Author, MongoAuthor>() {
+            @Override
+            public MongoAuthor process(Author author) throws Exception {
+                MongoAuthor mongoAuthor = new MongoAuthor(author.getFirstName(),author.getLastName());
+                logger.info("Author: " + author.getFirstName());
+                return mongoAuthor;
+            }
+        };
+    }
 
     @Bean
-    public RepositoryItemReader<Book> reader() {
+    public RepositoryItemReader<Book> bookReader() {
         Map<String, Sort.Direction> sort = new HashMap<>();
         sort.put("id", Sort.Direction.ASC);
         return new RepositoryItemReaderBuilder<Book>()
@@ -172,6 +182,17 @@ public class BatchConfig {
                 .build();
     }
 
+    @Bean
+    public RepositoryItemReader<Author> authorReader() {
+        Map<String, Sort.Direction> sort = new HashMap<>();
+        sort.put("id", Sort.Direction.ASC);
+        return new RepositoryItemReaderBuilder<Author>()
+                .repository(authorRepositoryJpa)
+                .sorts(sort)
+                .methodName("findAll")
+                .saveState(false)
+                .build();
+    }
 
 //    @Bean
 //    public ItemWriter<MongoBook> writer() {
@@ -187,13 +208,20 @@ public class BatchConfig {
 //    }
 
     @Bean
-    public RepositoryItemWriter<MongoBook> writer(MongoBookRepository mongoBookRepository) {
+    public RepositoryItemWriter<MongoBook> bookWriter(MongoBookRepository mongoBookRepository) {
         return new RepositoryItemWriterBuilder<MongoBook>()
                 .repository(mongoBookRepository)
                 .methodName("save")
                 .build();
     }
 
+    @Bean
+    public RepositoryItemWriter<MongoAuthor> authorWriter(MongoAuthorRepository mongoAuthorRepository) {
+        return new RepositoryItemWriterBuilder<MongoAuthor>()
+                .repository(mongoAuthorRepository)
+                .methodName("save")
+                .build();
+    }
 
 }
 

@@ -4,7 +4,7 @@ spring:
   batch:
     initialize-schema: always
   datasource:
-    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_data
+    url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
     username: temp_user
     password: temp_pas
     driver-class-name: org.postgresql.Driver
