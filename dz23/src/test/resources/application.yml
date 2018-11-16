@@ -1,9 +1,9 @@
 application:
   version: 1.0t
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
   data:
     mongodb:
 #      port: 0
@@ -12,9 +12,9 @@ spring:
       database: batch
       host: localhost
 #      port: 53146
-      port: 0
-      username:
-      password:
+      port: 64099
+#      username:
+#      password:
 #      authentication-database: none
   datasource:
     url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
@@ -22,6 +22,16 @@ spring:
     password: temp_pas
     driver-class-name: org.postgresql.Driver
     initialization-mode: never
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: none
 #  shell:
 #    interactive:
 #      enabled: false

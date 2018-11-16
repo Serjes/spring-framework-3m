@@ -14,22 +14,25 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import ru.otus.dz23.config.NoSqlConfig;
 
 import java.util.Collections;
 
-@TestConfiguration
+@Configuration
 //@SpringBootApplication(exclude = {NoSqlConfig.class})
 //@DataMongoTest
 //@Import(EmbeddedMongoAutoConfiguration.class)
 //@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
-//@EnableAutoConfiguration
-public class SpringBatchTestConfiguration extends AbstractMongoConfiguration {
+@EnableAutoConfiguration
+@EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
+public class MongoTestConfiguration extends AbstractMongoConfiguration {
 
     @Value("${spring.data.mongodb.database}")
     private String database;
@@ -61,10 +64,10 @@ public class SpringBatchTestConfiguration extends AbstractMongoConfiguration {
 //        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
 //    }
 
-    @Bean
-    public JobLauncherTestUtils jobLauncherTestUtils() {
-        return new JobLauncherTestUtils();
-    }
+//    @Bean
+//    public JobLauncherTestUtils jobLauncherTestUtils() {
+//        return new JobLauncherTestUtils();
+//    }
 
     @Override
     public MongoClient mongoClient() {
