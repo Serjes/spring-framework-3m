@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories
+@EnableJpaRepositories("ru.otus.dz23.repository")
 @EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
 public class Dz23Application {
 

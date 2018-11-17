@@ -28,7 +28,7 @@ import java.util.Collections;
 @Configuration
 //@SpringBootApplication(exclude = {NoSqlConfig.class})
 //@DataMongoTest
-//@Import(EmbeddedMongoAutoConfiguration.class)
+@Import(EmbeddedMongoAutoConfiguration.class)
 //@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
 @EnableAutoConfiguration
 @EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")

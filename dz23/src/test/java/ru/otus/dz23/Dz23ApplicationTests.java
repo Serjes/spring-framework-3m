@@ -3,10 +3,18 @@ package ru.otus.dz23;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +25,11 @@ import static org.junit.Assert.assertEquals;
 //@SpringBootTest
 //@SpringBootTest(classes = BatchConfig.class)
 //@SpringBootTest(classes = {BatchTestConfiguration.class, SqlConfig.class})
-@SpringBootTest(classes = {MongoTestConfiguration.class, BatchConfiguration.class})
+//@SpringBootTest(classes = {MongoTestConfiguration.class, BatchConfiguration.class})
+@SpringBootTest(classes = {MongoTestConfiguration.class})
+@EnableJpaRepositories("ru.otus.dz23.repository")
+//@EnableAutoConfiguration
+//@EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
 //@EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
 //@SpringApplicationConfiguration(classes = TestProductApplication.class)
 //@EnableMongoRepositories
@@ -30,10 +42,27 @@ import static org.junit.Assert.assertEquals;
 //@Import(SpringBatchTestConfiguration.class)
 public class Dz23ApplicationTests {
 
+    @Configuration
+    @EnableBatchProcessing
+    static class BatchTestConfig {
+
+        @Bean
+        JobLauncherTestUtils jobLauncherTestUtils() {
+            return new JobLauncherTestUtils(){
+                @Override
+                @Autowired
+                public void setJob(@Qualifier("importLibJob") Job job) {
+                    super.setJob(job);
+                }
+            };
+        }
+
+    }
+
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
-
 //    @Autowired
+
 //    MongoTemplate mongoTemplate;
 
 
