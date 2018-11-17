@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -21,62 +22,99 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.stereotype.Component;
 import ru.otus.dz23.config.NoSqlConfig;
 
 import java.util.Collections;
+import java.util.Optional;
 
-@Configuration
-//@SpringBootApplication(exclude = {NoSqlConfig.class})
-//@DataMongoTest
-@Import(EmbeddedMongoAutoConfiguration.class)
-//@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
-@EnableAutoConfiguration
-@EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
-public class MongoTestConfiguration extends AbstractMongoConfiguration {
-
-    @Value("${spring.data.mongodb.database}")
-    private String database;
+//@Configuration
+////@SpringBootApplication(exclude = {NoSqlConfig.class})
+////@DataMongoTest
+//@Import(EmbeddedMongoAutoConfiguration.class)
+////@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
+//@EnableAutoConfiguration
+//@EnableMongoRepositories(basePackages = "ru.otus.dz23.mongorepository")
+//public class MongoTestConfiguration extends AbstractMongoConfiguration {
 //
-    @Value("${spring.data.mongodb.host}")
-    private String host;
-
-    @Value("${spring.data.mongodb.port}")
-    private Integer port;
+//    @Value("${spring.data.mongodb.database}")
+//    private String database;
+////
+//    @Value("${spring.data.mongodb.host}")
+//    private String host;
 //
-//    @Value("${spring.data.mongodb.username}")
-//    private String username;
+//    @Value("${spring.data.mongodb.port}")
+//    private Integer port;
+////
+////    @Value("${spring.data.mongodb.username}")
+////    private String username;
+////
+////    @Value("${spring.data.mongodb.password}")
+////    private String password;
 //
-//    @Value("${spring.data.mongodb.password}")
-//    private String password;
-
-//    @Bean
+////    @Bean
+////    public MongoClient mongoClient() {
+////        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
+////                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
+////    }
+////    @Bean
+////    public MongoClient mongoClient(){
+////        return new MongoClient(host, port);
+////    }
+////
+////    @Bean
+////    public MongoTemplate mongoTemplate(){
+////        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
+////    }
+//
+////    @Bean
+////    public JobLauncherTestUtils jobLauncherTestUtils() {
+////        return new JobLauncherTestUtils();
+////    }
+//
+//    @Override
 //    public MongoClient mongoClient() {
-//        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
-//                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
-//    }
-//    @Bean
-//    public MongoClient mongoClient(){
+////        return null;
 //        return new MongoClient(host, port);
 //    }
 //
-//    @Bean
-//    public MongoTemplate mongoTemplate(){
-//        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
+//    @Override
+//    protected String getDatabaseName() {
+//        return database;
 //    }
+//}
 
-//    @Bean
-//    public JobLauncherTestUtils jobLauncherTestUtils() {
-//        return new JobLauncherTestUtils();
-//    }
+@Component
+@ConfigurationProperties("spring.data.mongodb")
+public class MongoTestConfiguration
+{
+    private String host;
+    private Integer port;
+    private String database;
 
-    @Override
-    public MongoClient mongoClient() {
-//        return null;
-        return new MongoClient(host, port);
+    public String getDatabase() {
+        return database;
     }
 
-    @Override
-    protected String getDatabaseName() {
-        return database;
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public String getHost()
+    {
+        return Optional.ofNullable(host).orElse(ServerAddress.defaultHost());
+    }
+
+    public int getPort()
+    {
+        return Optional.ofNullable(port).orElse(ServerAddress.defaultPort());
     }
 }
