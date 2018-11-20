@@ -11,12 +11,15 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.otus.dz23.config.NoSqlConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -78,7 +81,11 @@ import static org.junit.Assert.assertEquals;
 //    }
 //}
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = BatchConfiguration.class)
+//@SpringBootTest(classes = {BatchConfiguration.class, MongoTestConfiguration.class})
+//@SpringBootTest(classes = {BatchConfiguration.class})
+//@SpringBootApplication(exclude = NoSqlConfig.class)
+@SpringBootApplication(scanBasePackageClasses = BatchConfiguration.class)
+//@ComponentScan(value = {"ru.otus.dz23"}, excludeFilters = @ComponentScan.Filter(NoSqlConfig.class))
 public class Dz23ApplicationTests
 {
     @Autowired

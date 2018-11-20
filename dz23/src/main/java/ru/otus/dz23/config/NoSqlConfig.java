@@ -26,48 +26,40 @@ public class NoSqlConfig extends AbstractMongoConfiguration {
     @Value("${spring.data.mongodb.port}")
     private Integer port;
 
-//    @Value("${spring.data.mongodb.username}")
-//    private String username;
-//
-//    @Value("${spring.data.mongodb.password}")
-//    private String password;
+    @Value("${spring.data.mongodb.username}")
+    private String username;
 
-//    @Override
-//    public MongoClient mongoClient() {
-//        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
-//                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
-//    }
+    @Value("${spring.data.mongodb.password}")
+    private String password;
+
+    @Override
+    public MongoClient mongoClient() {
+        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
+                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
+    }
 //
 //    @Override
 //    protected String getDatabaseName() {
 //        return database;
 //    }
 //
-//    @Bean
-//    public MongoTemplate mongoTemplate(){
-//        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
-//    }
-//@Bean
-//public MongoTemplate mongoTemplate() throws IOException {
-//    EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
-//    mongo.setBindIp(MONGO_DB_URL);
-//    MongoClient mongoClient = mongo.getObject();
-//    MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, MONGO_DB_NAME);
-//    return mongoTemplate;
-//}
+    @Bean
+    public MongoTemplate mongoTemplate(){
+        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
+    }
 
     @Override
     protected String getDatabaseName() {
         return database;
     }
 
-    @Override
-    public MongoClient mongoClient() {
-        return new MongoClient("127.0.0.1", 54920);
-    }
+//    @Override
+//    public MongoClient mongoClient() {
+//        return new MongoClient("127.0.0.1", 54920);
+//    }
 
-    @Bean
-    public MongoTemplate mongoTemplate(){
-        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
-    }
+//    @Bean
+//    public MongoTemplate mongoTemplate(){
+//        return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
+//    }
 }

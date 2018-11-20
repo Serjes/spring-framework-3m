@@ -85,6 +85,7 @@ import java.util.Optional;
 //}
 
 @Component
+//@Configuration
 @ConfigurationProperties("spring.data.mongodb")
 public class MongoTestConfiguration
 {

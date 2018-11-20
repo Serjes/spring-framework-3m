@@ -7,12 +7,10 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 
 //@Configuration
 ////@EnableBatchProcessing
@@ -31,8 +29,11 @@ import org.springframework.context.annotation.Import;
 ////    }
 //}
 @TestConfiguration
+//@Import({EmbeddedMongoAutoConfiguration.class, ru.otus.dz23.MongoTestConfiguration.class})
 @Import(EmbeddedMongoAutoConfiguration.class)
-@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
+//@ComponentScan("ru.otus.dz23")
+//@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
+//@AutoConfigureBefore(EmbeddedMongoAutoConfiguration.class)
 public class BatchConfiguration
 {
     @Bean
