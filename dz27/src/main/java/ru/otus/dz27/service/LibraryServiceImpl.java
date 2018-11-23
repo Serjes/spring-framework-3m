@@ -3,6 +3,7 @@ package ru.otus.dz27.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.dz27.actuator.BooksMeter;
 import ru.otus.dz27.domain.Author;
 import ru.otus.dz27.domain.Book;
 import ru.otus.dz27.domain.Genre;
@@ -25,6 +26,9 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private BooksMeter booksMeter;
 
 
     @Override
@@ -49,7 +53,8 @@ public class LibraryServiceImpl implements LibraryService {
         }
         Book book = new Book(title, author, genre);
         bookRepository.save(book);
-        System.out.println("Сохранили новую книжку");
+
+        booksMeter.handleMessage("book was added");
     }
 
     @Override
