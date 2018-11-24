@@ -6,25 +6,14 @@ spring:
       ddl-auto: none
   data:
     mongodb:
-#      port: 0
-#      authentication-database: admin
-#      authentication: none
       database: batch
       host: localhost
-#      port: 53146
       port: 55338
       username:
       password:
-#      authentication-database: none
   datasource:
     url: jdbc:postgresql://188.227.18.141:5432/lib_spring_mvc
     username: temp_user
     password: temp_pas
     driver-class-name: org.postgresql.Driver
     initialization-mode: never
-#  shell:
-#    interactive:
-#      enabled: false
-#  batch:
-#    job:
-#      enabled: false

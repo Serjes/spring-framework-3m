@@ -12,28 +12,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-//@ExtendWith(SpringExtension.class)
-//@DataMongoTest
-//@SpringBootTest
-//@SpringBootTest(classes = BatchConfig.class)
 @SpringBootTest(classes = BatchTestConfiguration.class)
-//@SpringApplicationConfiguration(classes = TestProductApplication.class)
-//@EnableMongoRepositories
-//@AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
-//@Transactional(propagation = Propagation.NOT_SUPPORTED)
-//@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.)
-//@AutoConfigureDataMongo
-//@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-//@ComponentScan
-//@Import(SpringBatchTestConfiguration.class)
 public class Dz23ApplicationTests {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
-
-//    @Autowired
-//    MongoTemplate mongoTemplate;
-
 
     @Test
     public void launchJob() throws Exception {

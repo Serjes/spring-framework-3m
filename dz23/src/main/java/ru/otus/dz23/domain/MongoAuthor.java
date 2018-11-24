@@ -4,9 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Document(collection = "authors")
 public class MongoAuthor {
 
@@ -36,9 +33,5 @@ public class MongoAuthor {
     public String getLastName() {
         return lastName;
     }
-
-//    public List<MongoBook> getMongoBooks() {
-//        return mongoBooks;
-//    }
 
 }
