@@ -12,7 +12,7 @@ spring:
       database: batch
       host: localhost
 #      port: 53146
-      port: 0
+      port: 55338
       username:
       password:
 #      authentication-database: none

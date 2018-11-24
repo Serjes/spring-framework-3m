@@ -32,11 +32,11 @@ public class NoSqlConfig extends AbstractMongoConfiguration {
     @Value("${spring.data.mongodb.password}")
     private String password;
 
-    @Override
-    public MongoClient mongoClient() {
-        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
-                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
-    }
+//    @Override
+//    public MongoClient mongoClient() {
+//        return new MongoClient(Collections.singletonList(new ServerAddress(host, port)),
+//                Collections.singletonList(MongoCredential.createCredential(username, database, password.toCharArray())));
+//    }
 
     @Override
     protected String getDatabaseName() {
@@ -46,6 +46,11 @@ public class NoSqlConfig extends AbstractMongoConfiguration {
     @Bean
     public MongoTemplate mongoTemplate(){
         return new MongoTemplate(new SimpleMongoDbFactory(mongoClient(), database));
+    }
+
+    @Override
+    public MongoClient mongoClient() {
+        return new MongoClient(host, port);
     }
 
 }
