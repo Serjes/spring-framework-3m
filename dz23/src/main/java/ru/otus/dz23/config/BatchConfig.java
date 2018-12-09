@@ -15,6 +15,7 @@ import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
@@ -67,12 +68,12 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step1(ItemWriter bookWriter) {
+    public Step step1(@Qualifier("bookWriter") ItemWriter writer) {
         return stepBuilderFactory.get("step1")
                 .chunk(3)
                 .reader(bookReader())
                 .processor(bookProcessor())
-                .writer(bookWriter)
+                .writer(writer)
                 .listener(new ItemProcessListener() {
                     public void beforeProcess(Object o) {
                         logger.info("Начало обработки");
@@ -104,12 +105,12 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step2(ItemWriter authorWriter) {
+    public Step step2(@Qualifier("authorWriter") ItemWriter writer) {
         return stepBuilderFactory.get("step2")
                 .chunk(3)
                 .reader(authorReader())
                 .processor(authorProcessor())
-                .writer(authorWriter)
+                .writer(writer)
                 .listener(new ItemProcessListener() {
                     public void beforeProcess(Object o) {
                         logger.info("Начало обработки");
@@ -191,6 +192,7 @@ public class BatchConfig {
     }
 
     @Bean
+    @Qualifier("bookWriter")
     public RepositoryItemWriter<MongoBook> bookWriter(MongoBookRepository mongoBookRepository) {
         return new RepositoryItemWriterBuilder<MongoBook>()
                 .repository(mongoBookRepository)
@@ -199,6 +201,7 @@ public class BatchConfig {
     }
 
     @Bean
+    @Qualifier("authorWriter")
     public RepositoryItemWriter<MongoAuthor> authorWriter(MongoAuthorRepository mongoAuthorRepository) {
         return new RepositoryItemWriterBuilder<MongoAuthor>()
                 .repository(mongoAuthorRepository)
